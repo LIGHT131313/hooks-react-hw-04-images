@@ -48,7 +48,7 @@ export class App extends Component {
         this.setState({ loading: true });
         const newQuery = query.slice(14);
         const { hits, totalHits } = await fetchQuery(newQuery, page);
-        console.log(hits.length);
+
         if (!hits.length) {
           toast.error(
             'Sorry, there are no images matching your search query. Please try again.'
