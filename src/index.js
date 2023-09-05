@@ -5,12 +5,12 @@ import { App } from 'components/App.jsx';
 
 const theme = {
   colors: {
-    beige: 'beige',
+    bodyColor: '#212121',
     white: '#fff',
     red: 'red',
     green: '#a3d0c3',
   },
-  borRad: '0px 0px 4px 4px',
+  borRad: '2px',
   boxSh: {
     one: '0px 1px 6px rgba(46, 47, 66, 0.08)',
     two: '0px 1px 1px rgba(46, 47, 66, 0.16)',
