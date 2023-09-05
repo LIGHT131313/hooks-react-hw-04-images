@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 Modal.setAppElement(document.getElementById('root'));
 // import { Overlay, ModalImg } from '../Modal/Modal.styled';
@@ -31,8 +32,15 @@ export const ModalWrap = ({ modalIsOpen, onClose, largeImageURL, tags }) => {
   return (
     <Modal isOpen={modalIsOpen} onRequestClose={onClose} style={customStyles}>
       <div onClick={onClose}>
-        <img src={largeImageURL} alt={tags} />
+        <img src={largeImageURL} alt={tags} loading="lazy" />
       </div>
     </Modal>
   );
+};
+
+ModalWrap.propTypes = {
+  modalIsOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  largeImageURL: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
 };
