@@ -30,7 +30,7 @@ const customStyles = {
 export const ModalWrap = ({ modalIsOpen, onClose, largeImageURL, tags }) => {
   return (
     <Modal isOpen={modalIsOpen} onRequestClose={onClose} style={customStyles}>
-      <div onClick={onClose}>
+      <div>
         <img src={largeImageURL} alt={tags} loading="lazy" />
       </div>
     </Modal>

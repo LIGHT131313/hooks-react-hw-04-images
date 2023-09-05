@@ -7,7 +7,7 @@ const theme = {
   colors: {
     bodyColor: '#212121',
     white: '#fff',
-    red: 'red',
+    blue: '#3f51b5',
     green: '#a3d0c3',
   },
   borRad: '2px',
