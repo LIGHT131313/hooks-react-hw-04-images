@@ -5,7 +5,6 @@ import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Loader } from './Loader/Loader';
 import { Button } from './Button/Button';
-
 import { fetchQuery } from 'api';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -75,7 +74,7 @@ export class App extends Component {
         <Searchbar onSubmit={this.handleSubmit} />
         {images.length > 0 && <ImageGallery images={images} />}
         {loading && <Loader />}
-        {loadMore && images.lengthgi && (
+        {loadMore && images.length > 0 && (
           <Button onClick={this.handleLoadMore} />
         )}
         <GlobalStyle />

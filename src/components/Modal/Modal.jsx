@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
 Modal.setAppElement(document.getElementById('root'));
-// import { Overlay, ModalImg } from '../Modal/Modal.styled';
 
 const customStyles = {
   overlay: {
