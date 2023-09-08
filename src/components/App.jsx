@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { GlobalStyle } from './GlobalStyles';
 import { Layout } from './Layout';
 import { Searchbar } from './Searchbar/Searchbar';
@@ -8,43 +8,35 @@ import { Button } from './Button/Button';
 import { fetchQuery } from 'api';
 import toast, { Toaster } from 'react-hot-toast';
 
-export class App extends Component {
-  state = {
-    query: '',
-    images: [],
-    page: 1,
-    loadMore: false,
-    loading: false,
-  };
+export const App = () => {
+  const [query, setQuery] = useState('');
+  const [images, setImages] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loadMore, setLoadmore] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  handleSubmit = evt => {
+  const handleSubmit = evt => {
     evt.preventDefault();
     const value = evt.target.elements.query.value;
 
     if (!value.trim()) {
       toast.error('Please enter a non-empty search query');
     } else {
-      this.setState({
-        query: `${Date.now()}/${value}`,
-        images: [],
-        page: 1,
-      });
+      setQuery(`${Date.now()}/${value}`);
+      setImages([]);
+      setPage(1);
     }
+
     evt.target.reset();
   };
 
-  handleLoadMore = () => {
-    this.setState(pState => ({
-      page: pState.page + 1,
-    }));
-  };
-
-  async componentDidUpdate(prevProps, prevState) {
-    const { query, page } = this.state;
-
-    if (prevState.query !== query || prevState.page !== page) {
+  useEffect(() => {
+    if (!query) {
+      return;
+    }
+    async function getImages() {
       try {
-        this.setState({ loading: true });
+        setLoading(true);
         const newQuery = query.slice(14);
         const { hits, totalHits } = await fetchQuery(newQuery, page);
 
@@ -53,33 +45,29 @@ export class App extends Component {
             'Sorry, there are no images matching your search query. Please try again.'
           );
         } else {
-          this.setState(pState => ({
-            images: [...pState.images, ...hits],
-            loadMore: page < Math.ceil(totalHits / 12),
-          }));
+          setImages([...images, ...hits]);
+          setLoadmore(page < Math.ceil(totalHits / 12));
         }
       } catch (error) {
         toast.error('Something went wrong, please try again!');
       } finally {
-        this.setState({ loading: false });
+        setLoading(false);
       }
     }
-  }
+    getImages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, query]);
 
-  render() {
-    const { images, loadMore, loading } = this.state;
+  const handleLoadMore = () => setPage(page + 1);
 
-    return (
-      <Layout>
-        <Searchbar onSubmit={this.handleSubmit} />
-        {images.length > 0 && <ImageGallery images={images} />}
-        {loading && <Loader />}
-        {images.length > 0 && loadMore && (
-          <Button onClick={this.handleLoadMore} />
-        )}
-        <GlobalStyle />
-        <Toaster position="top-right" />
-      </Layout>
-    );
-  }
-}
+  return (
+    <Layout>
+      <Searchbar onSubmit={handleSubmit} />
+      {images.length > 0 && <ImageGallery images={images} />}
+      {loading && <Loader />}
+      {images.length > 0 && loadMore && <Button onClick={handleLoadMore} />}
+      <GlobalStyle />
+      <Toaster position="top-right" />
+    </Layout>
+  );
+};
